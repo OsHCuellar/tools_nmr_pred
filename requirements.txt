@@ -1,0 +1,13 @@
+# Add here any python requirements for your app, in the format
+# accepted by pip
+
+# SUGGESTION: try to pin all your versions, to ensure that this
+# tool will continue working in the future.
+# So, avoid using things like `numpy` or `numpy>1.15`, but try to
+# pin exact versions like `numpy==1.18.4` or at least pin
+# major and minor version: `numpy>=1.18.3,<1.19`
+
+
+numpy
+rdkit
+molplotly

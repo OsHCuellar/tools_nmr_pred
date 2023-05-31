@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Add CSS, JS, ... here, e.g, these from tools-barebone;  -->
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../static/css/jquery-ui.1.12.1.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/visualizer_base.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/visualizer_input.min.css"/>
+    <script src="../../static/js/jquery-3.1.0.min.js"></script>
+    <script src="../../static/js/jquery-ui.1.12.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../user_static/css/custom-elements.css"/>
+
+    <!-- If you add things in a user_static folder, you will be able to access it via ../../user_static/xxx -->
+
+    <title>nmr_pred result example</title>
+
+    <!-- Keep this, it's needed to make the tool embeddable in an iframe; it's provided by tools-barebone -->
+    <script src="../../static/js/iframeResizer.contentWindow.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js" charset="utf-8"></script>
+
+    <style>
+    .resultSection{
+        border-right: 1px solid #007FFF;
+        border-left: 1px solid #007FFF;
+        border-bottom: 1px solid #007FFF;
+        border-radius: 5px;
+        background-color: white;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        margin:auto;
+    }
+    .resultSection > h2 {
+        background-color: #007FFF;
+        color: white;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-left:-10px;
+        margin-right:-10px;
+        border-radius: 5px;
+        border:1px solid #007FFF;                         
+    }
+
+    .container-grid {
+    display: grid;
+    grid-template-columns: 30% 70%; /*columns widths*/
+    }
+    
+    .col-1 {
+      background-color: #FFCCCC;
+    }
+    
+    .col-2 {
+      background-color: #CCFFCC;
+    }
+
+    table, th, td {
+    border: 1px solid black;
+    text-align: center;
+    }
+    </style>
+
+</head>
+
+<body>
+
+<div id='container'>
+
+    <div id='maintitle'>
+        <h1 style="text-align: center;">nmr_pred result example</h1>
+    </div>
+
+    <h2>Successfully "analized"</h2>
+
+    <div class="resultSection">
+        <h2>Spectrum Details</h2>
+        <div>
+            <b>File name : </b> file name<br>
+            <b>SMILES : </b> smiles <br>
+            <b>Formula : </b> formula <br>
+            <b>Molecular weight : </b> molecular weigth <br>
+        </div>
+    </div>
+
+</div>
+
+<div style="width:90%; margin:auto;">
+    <div class="resultSection">
+        <h2>Predicted NMR spectrum</h2>
+        <div style="flex-grow:1;width:90%;margin:auto;">
+            <div id="myPlot" style="width:100%;"></div>
+            <script>
+                var plotClick = document.getElementById('myPlot');
+                const xArray = {{graphX}} ;//[0.000, 0.224, 0.447, 0.671, 0.894, 1.118];
+                const yArray = {{graphY}};//[0.89206, 0.778724, 0.54106, 0.28961, 0.12073, 0.03919];
+                //const rMinX = {{minX}};
+                //const rMaxX = {{maxX}};
+                const zArray = {{XplusY}};//[0.89206, 0.778724, 0.54106, 0.28961, 0.12073, 0.03919];
+                const molFormula = '{{molFormula}}';
+                const arr = molFormula.split(',');
+
+                // Define Data
+                const data = [{
+                  x:xArray,
+                  y:yArray,
+                  text:arr,
+                  //z:SmilesList,
+                  mode: 'markers',
+	              marker: {
+		            size: 12,
+		            color: zArray,
+		            opacity: 0.8},
+
+                  //type: 'scatter3d',
+                  //mode:"lines",
+                  type: "scatter",
+                  //line: {'shape': 'spline', 'smoothing': 1.3},
+                },
+                ];
+                
+                // Define Layout
+                const layout = {
+                  //xaxis: {range: [rMinX, rMaxX], title: "ppm"},
+                  //yaxis: {range: [0, 1.5], title: "Intensity"},
+                  title: "Title of the graph, if needed"
+                };
+                
+                // Display using Plotly
+                Plotly.newPlot("myPlot", data, layout);
+
+                plotClick.on('plotly_click', function(data, custom_data){
+                    var pts = '';
+                    for(var i=0; i < data.points.length; i++){
+                        pts = 'x = '+data.points[i].x +'\ny = '+
+                            data.points[i].y.toPrecision(4) + '\n\n';
+                        ptsFormula = data.points[i].text;
+                        pointIndex = data.points[i].pointNumber;
+                    }
+                    document.getElementById("molecularFormula").textContent = ptsFormula;
+                    allInfo(pointIndex);
+                    //document.getElementById("molecularSMILES").textContent = pointIndex;
+                    //alert('Closest point clicked:\n\n'+pts);
+                });
+
+                function allInfo(pointIndex) {
+                const molSmiles = '{{molSmiles}}';
+                const SmilesList = molSmiles.split(',');
+                    document.getElementById("molecularSMILES").textContent = SmilesList[pointIndex];
+                };
+
+            </script>
+
+        </div>
+    </div>
+
+    <div class="resultSection">
+        <h2>Assignment</h2>
+        <div style="flex-grow:1;width:100%;margin:auto;" class="container-grid">
+            <div class="col col-1">
+                Jsmol applet containing the molecule with the correct index
+                <p>Molecular Formula: <div id="molecularFormula"></div></p>
+                <p>SMILES: <div id="molecularSMILES"></div></p>
+            </div>
+            <div class="col col-2" style="width:100%">
+                <table style="width:100%">
+                  <tr>
+                    <th>Row No.</th>
+                    <th>Cluster Midpoint</th>
+                    <th>No. Peaks</th>
+                    <th>Coupling Type</th>
+                    <th>No. H's</th>
+                    <th>Atom No.</th>
+                    <th>Peak Centers (ppm)</th>
+                  </tr>
+                  <tr>
+                      <td>1</td>
+                      <td>4</td>
+                      <td>1</td>
+                      <td>s</td>
+                      <td>1</td>
+                      <td>32</td>
+                      <td>2.34</td>
+                  </tr>
+                  <tr>
+                      <td>2</td>
+                      <td>2</td>
+                      <td>4</td>
+                      <td>d</td>
+                      <td>2</td>
+                      <td>12</td>
+                      <td>4.3</td>
+                  </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<!-- Important: leave this tag as the *very last* in your page, just before the end of the body -->
+<!-- It is needed to properly detect the size of the iframe -->
+<div style ="position: relative" data-iframe-height></div>
+
+</body>
+</html>
