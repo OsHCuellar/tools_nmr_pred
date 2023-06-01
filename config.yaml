@@ -4,13 +4,13 @@ page_title: "nmr_pred"
 about_section_title: "About this tool"
 
 templates:
-  how_to_cite: "how_to_cite.html"
+  how_to_cite: null #"how_to_cite.html"
   about: "custom_about.html"
   select_content: "additional_selection.html"
   # upload_structure_additional_content: "upload_structure_additional_content.html" # if the upload structure block is present, you can add additional content right above the 'submit' button, if you want (e.g. a disclaimer, terms of use, ...)
 
 use_upload_structure_block: False
 
-additional_accordion_entries:
-  - header: "Acknowledgements"
-    template_page: ack.html
+#additional_accordion_entries:
+#  - header: "Acknowledgements"
+#    template_page: ack.html

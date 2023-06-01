@@ -4,7 +4,7 @@ import logging
 
 import flask
 from tools_barebone.structure_importers import get_structure_tuple, UnknownFormatError
-from compute.gaussianCalc import gaussPoints, importSDF#, pandasDF
+from compute.tsneINPUT import gaussPoints, importSDF, importCSV
 
 blueprint = flask.Blueprint("compute", __name__, url_prefix="/compute")
 
@@ -103,6 +103,13 @@ def process_structure_example():
     full HTML headers."""
     if flask.request.method == "POST":
 
+        tsneDir = flask.request.form.get("tsne1", "UNKNOWN")
+        tsneFile = flask.request.form.get("tsne2", "UNKNOWN")
+
+        if tsneDir == "notValid" or tsneFile == "notValid":
+            flask.flash("Please select a t-SNE-Map.")
+            return flask.redirect(flask.url_for("input_data"))
+
         minX=-5
         maxX=5
         npoints=50
@@ -111,7 +118,9 @@ def process_structure_example():
         c=1 #standard deviation
 
         #gaussPoints(minX, maxX, npoints, a, b, c)
-        graphX, graphY, graphZ, molFormula, molSmiles, molWeight = importSDF()
+        #graphX, graphY, graphZ, molFormula, molSmiles, molWeight = importSDF()
+        graphX, graphY, graphZ, molFormula, molSmiles, molWeight = importCSV(tsneDir,tsneFile)
+        #graphX, graphY, graphZ, molSmiles = importCSV()
         #df = pandasDF()
 
         #graphX, graphY = gaussPoints(minX,maxX,npoints,a,b,c)
@@ -125,11 +134,14 @@ def process_structure_example():
                 "molFormula": str(molFormula),
                 "molSmiles": str(molSmiles),
                 "molWeight": str(molWeight),
+                "tsneFile": str(tsneFile),
+                "tsneDir": str(tsneDir)
                 }
         #return str(graphX) + " ## " + str(graphY) + " ## " + str(graphZ)
 
         # This is the `value` of the option tag, not the text shown to the user
-        value = flask.request.form.get("examplevalue", "UNKNOWN")
+
+
         return flask.render_template("user_templates/result_example.html", **data_for_template)
         return "This was a POST request, with value <pre>{}</pre>".format(value)
     return "This was a GET request"

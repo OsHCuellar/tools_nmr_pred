@@ -1,6 +1,6 @@
-
 FROM materialscloud/tools-barebone:1.3.0
 LABEL maintainer="Materials Cloud Admin <info@materialscloud.org>"
+
 
 COPY ./requirements.txt /home/app/code/requirements.txt
 RUN pip3 install -U 'pip>=10' setuptools wheel
@@ -10,6 +10,7 @@ USER app
 WORKDIR /home/app/code
 # Install pinned versions of packages
 RUN pip3 install --user -r requirements.txt
+
 
 # Go back to root. Also, it should remain as user root for startup
 USER root

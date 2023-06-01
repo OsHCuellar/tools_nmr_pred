@@ -29,24 +29,100 @@
 <form action="compute/chemical_diversity/" method="post">
   <div style="margin-left: 20px; margin-right: 20px;">
     <div class='alert alert-info'>
-        <!--
+       
+<script>
+var subjectObject = {
+  "random": [
+    "tsne_latent_space_cosine_100_MAE",
+    "tsne_latent_space_cosine_100_peakcounter",
+    "tsne_latent_space_cosine_10_MAE",
+    "tsne_latent_space_cosine_10_peakcounter",
+    "tsne_latent_space_cosine_50_MAE",
+    "tsne_latent_space_cosine_50_peakcounter",
+    "tsne_latent_space_cosine_5_MAE",
+    "tsne_latent_space_cosine_5_peakcounter",
+  ],
+  "mw_low": [
+    "tsne_latent_space_cosine_10_MAE",
+    "tsne_latent_space_cosine_10_peakcounter",
+    "tsne_latent_space_cosine_120_MAE",
+    "tsne_latent_space_cosine_120_peakcounter",
+    "tsne_latent_space_cosine_160_MAE",
+    "tsne_latent_space_cosine_160_peakcounter",
+    "tsne_latent_space_cosine_200_MAE",
+    "tsne_latent_space_cosine_80_MAE",
+    "tsne_latent_space_cosine_80_peakcounter",
+    "tsne_latent_space_euclidean_160_MAE",
+    "tsne_latent_space_euclidean_160_peakcounter",
+    "tsne_MF_cosine_10_MAE",
+    "tsne_MF_cosine_10_peakcounter",
+    "tsne_MF_cosine_5_MAE"
+  ],
+  "mw_high": [
+    "tsne_latent_space_cosine_10_MAE",
+    "tsne_latent_space_cosine_10_peakcounter",
+    "tsne_latent_space_cosine_300_MAE",
+    "tsne_latent_space_cosine_300_peakcounter",
+    "tsne_latent_space_cosine_320_MAE",
+    "tsne_latent_space_cosine_320_peakcounter",
+    "tsne_latent_space_cosine_400_MAE",
+    "tsne_latent_space_cosine_400_peakcounter",
+    "tsne_latent_space_cosine_50_MAE",
+    "tsne_latent_space_cosine_50_peakcounter",
+    "tsne_latent_space_cosine_5_MAE",
+    "tsne_latent_space_cosine_5_peakcounter"
+  ]
+}
+window.onload = function() {
+  var subjectSel = document.getElementById("tsne1");
+  var topicSel = document.getElementById("tsne2");
+  for (var x in subjectObject) {
+    subjectSel.options[subjectSel.options.length] = new Option(x, x);
+  }
+  subjectSel.onchange = function() {
+    topicSel.length = 1
+    //display correct values
+    var z = subjectObject[this.value];
+    for (var i = 0; i < z.length; i++) {
+      topicSel.options[topicSel.options.length] = new Option(z[i], z[i]);
+    }
+  }
+
+}
+</script>
+
       <div class="row">
-	<div class="col-xs-12 col-sm-6">
-	  <label for="examplevalue">Select here a value:</label>
-	</div>
-	<div class="col-xs-12 col-sm-6">
-	  <select name="examplevalue">
-	    <option value='YES-val'>Yes</option>
-	    <option value='NO-val'>No</option>
-	    <option value='MAYBE-val'>Maybe</option>
-	  </select>
-	</div>
+	        <div class="col-xs-8 col-sm-3">
+	          <label for="examplevalue">Select a t-SNE-Map:</label>
+	        </div>
+	        <div class="col-xs-8 col-sm-3">
+	          <select name="tsne1" id="tsne1">
+	            <option selected="selected" value="notValid" > Latent Space </option>
+                <!--
+	            <option value='random'>Random</option>
+	            <option value='mw_low'>Low molecular weight</option>
+	            <option value='mw_high'>High molecular weight</option>
+                -->
+	          </select>
+	        </div>
+	        <div class="col-xs-8 col-sm-4">
+	          <select name="tsne2" id="tsne2">
+	            <option selected="selected" value="notValid"> tsne_{rep}_{metric}_{perp}_{target}</option>
+                <!--
+	            <option value='YES-val'>Yes</option>
+	            <option value='NO-val'>No</option>
+	            <option value='MAYBE-val'>Maybe</option>
+                -->
+	          </select>
+	        </div>
       </div>
-        -->
+
+      </br>
 
       <div class='row' style="text-align: center">
-	<input type="submit" value="Visualize the chemical diversity" class="btn btn-default">
+	        <input type="submit" value="Visualize the chemical diversity" class="btn btn-default">
       </div>
+
     </div>
   </div>
 </form>

@@ -81,7 +81,7 @@
 
 <div style="width:90%; margin:auto;">
     <div class="resultSection">
-        <h2>TSNE</h2>
+        <h2>t-SNE Map</h2>
         <div style="flex-grow:1;width:90%;margin:auto;">
             <div id="myPlot" style="width:100%;"></div>
             <script>
@@ -93,6 +93,7 @@
                 const zArray = {{XplusY}};//[0.89206, 0.778724, 0.54106, 0.28961, 0.12073, 0.03919];
                 const molFormula = '{{molFormula}}';
                 const arr = molFormula.split(',');
+                const nameplot = '{{tsneFile}}';
 
                 // Define Data
                 const data = [{
@@ -101,6 +102,7 @@
                   text:arr,
                   mode: 'markers',
 	              marker: {
+                    colorscale:'YlOrBr',
 		            size: 12,
 		            color: zArray,
 		            opacity: 0.8},
@@ -116,7 +118,7 @@
                 const layout = {
                   //xaxis: {range: [rMinX, rMaxX], title: "ppm"},
                   //yaxis: {range: [0, 1.5], title: "Intensity"},
-                  title: "tsne cosine 100"
+                  title: nameplot
                 };
                 
                 // Display using Plotly
@@ -144,12 +146,13 @@
                 const SmilesList = molSmiles.split(',');
                 const molWeight = '{{molWeight}}';
                 const weightList = molWeight.split(',');
+                const tsneDir = '{{tsneDir}}';
 
                     document.getElementById("molecularSMILES").textContent = SmilesList[pointIndex];
                     document.getElementById("molecularWeight").textContent = weightList[pointIndex];
                     document.getElementById("labelPosition").textContent = zArray[pointIndex];
 
-                    document.getElementById("molecularImage").src ="../../user_static/img/molImages/" + pointIndex + ".png";
+                    document.getElementById("molecularImage").src ="../../user_static/img/"+ tsneDir +"_img/" + pointIndex + ".png";
                 };
 
             </script>

@@ -3,11 +3,10 @@ services:
   tools-example:
     volumes:
       - "./compute/__init__.py:/home/app/code/webservice/compute/__init__.py:rw"
-      - "./compute/gaussianCalc.py:/home/app/code/webservice/compute/gaussianCalc.py:rw"
       - "./user_templates/result_example.html:/home/app/code/webservice/templates/user_templates/result_example.html:rw"
       - "./user_static/css/custom-elements.css:/home/app/code/webservice/user_static/css/custom-elements.css:rw" 
     build: .
     ports:
      - "8091:80"
-    container_name: tools-nmr-pred
-    image: tools-nmr-pred
+    container_name: tools-nmr-pred1
+    image: tools-nmr-pred1
